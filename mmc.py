@@ -7,18 +7,8 @@ from shapely.geometry import Polygon, Point, MultiPolygon
 import shapely
 import distance_function
 
-alpha_income =       1
-alpha_kpr =          1
-alpha_health =       1
-alpha_insurance =    1
-alpha_vehicles =     1
-alpha_pop_density =  1
-
-def Distance_Willing(income, kid_parant_ratio, health, insurance, vehicles, population_density):
-    return alpha_income*income + alpha_kpr*kid_parant_ratio + alpha_health*health + alpha_insurance*insurance + alpha_vehicles*vehicles + alpha_pop_density*population_density
-
 if __name__ == '__main__':
-    count = 10
+    count = 5000
     data_x = np.random.uniform(-84.41352382914673, -75.3388168853683, count)
     data_y = np.random.uniform(33.75578655156453, 36.733972442257816, count)
 
@@ -84,7 +74,7 @@ if __name__ == '__main__':
         distance_param = distance_function.calc_distance(data_x[i], data_y[i])
         pharmacy_count = 0
         for pharmacy in pharmacy_points:
-            if (shapely.distance(pharmacy, Point(data_x[i], data_y[i])) < distance_param):
+            if (shapely.distance(pharmacy, Point(data_x[i], data_y[i])) * (69/5) < distance_param):
                 pharmacy_count += 1
         nc_data_pharmacies.append(pharmacy_count)
 
