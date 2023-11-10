@@ -81,17 +81,17 @@ for line in phamacies_reader:
 
         # TODO: Get distance for point
             # Get income
-            income = 0
+        income = 0
             # Get kid to parent ratio
-            kpr = 0
+        kpr = 0
             # Get general health
-            health = 0
+        health = 0
             # Get insurance
-            insurance = 0
+        insurance = 0
             # Get number of vehicles
-            vehicles = 0
+        vehicles = 0
             # Get population density
-            pop_density = 0
+        pop_density = 0
 
 
 
@@ -103,7 +103,7 @@ for line in phamacies_reader:
         for pharmacy in pharmacy_points:
             if (distance(pharmacy, Point(data_x[i], data_y[i])) < distance_willing):
                 pharmacy_count += 1
-        nc_data_pharmacies.append[pharmacy_count]
+        nc_data_pharmacies.append(pharmacy_count)
 
 
 
