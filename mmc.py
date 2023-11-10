@@ -5,6 +5,7 @@ import json
 import pandas as pd
 from shapely.geometry import Polygon, Point, MultiPolygon
 import shapely
+import distance_function
 
 alpha_income =       1
 alpha_kpr =          1
@@ -78,31 +79,12 @@ if __name__ == '__main__':
         if (state.size > 0 and state.iloc[0] == 'North Carolina'):
             nc_data_x.append(data_x[i])
             nc_data_y.append(data_y[i])
-
-
-        # TODO: Get distance for point
-            # Get income
-        income = 0
-            # Get kid to parent ratio
-        kpr = 0
-            # Get general health
-        health = 0
-            # Get insurance
-        insurance = 0
-            # Get number of vehicles
-        vehicles = 0
-            # Get population density
-        pop_density = 0
-
-
-
         
-
         # Iterate over every pharmacies checking its distance
-        distance_willing = Distance_Willing(income, kpr, health, insurance, vehicles, pop_density)
+        distance_param = distance_function.calc_distance(data_x[i], data_y[i])
         pharmacy_count = 0
         for pharmacy in pharmacy_points:
-            if (shapely.distance(pharmacy, Point(data_x[i], data_y[i])) < distance_willing):
+            if (shapely.distance(pharmacy, Point(data_x[i], data_y[i])) < distance_param):
                 pharmacy_count += 1
         nc_data_pharmacies.append(pharmacy_count)
 
