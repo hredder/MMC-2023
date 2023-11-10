@@ -77,5 +77,5 @@ for i in range(len(data_x)):
 
 #Plot random N.C. Data
 plt.scatter(nc_data_y,nc_data_x, c='b')
-plt.scatter(pharmacy_x, pharmacy_x, c='r')
+plt.scatter(pharmacy_x, pharmacy_y, c='r')
 plt.show()
