@@ -15,7 +15,7 @@ alpha_pop_density =  1
 def Distance_Willing(income, kid_parant_ratio, health, insurance, vehicles, population_density):
     return alpha_income*income + alpha_kpr*kid_parant_ratio + alpha_health*health + alpha_insurance*insurance + alpha_vehicles*vehicles + alpha_pop_density*population_density
 
-count = 10
+count = 5000
 data_x = np.random.uniform(33.75578655156453, 36.733972442257816, count)
 data_y = np.random.uniform(-84.41352382914673, -75.3388168853683, count)
 
@@ -32,11 +32,6 @@ for line in reader:
         pharmacy_x.append(float(line[8]))
         pharmacy_y.append(float(line[9]))
     count += 1
-
-#plt.scatter(data_x, data_y)
-#plt.scatter(pharmacy_x, pharmacy_y, c='r')
-#plt.show()
-
 
 #Import GPS data
 data = json.load(open('geojson.json'))
@@ -69,10 +64,18 @@ for idx, row in df.iterrows():
     df_new = df_new.append(row)
 
 df_selection = df_new.drop(columns=['type', 'properties', 'geometry','Coordinates'] )
-nc_pharmacies_x = []
-nc_pharmacies_y = []
+nc_data_x = []
+nc_data_y = []
 
-for i in range(len(pharmacy_x)):
-    point = Point(pharmacy_x[i], pharmacy_y[i])
+#Prune random data for points only in N.C.
+for i in range(len(data_x)):
+    point = Point(data_y[i], data_x[i])
     state = df_selection.apply(lambda row: row['Location'] if row['Polygon'].contains(point) else None, axis=1).dropna()
-    print(state)
+    if (state.size > 0 and state.iloc[0] == 'North Carolina'):
+        nc_data_x.append(data_x[i])
+        nc_data_y.append(data_y[i])
+
+#Plot random N.C. Data
+plt.scatter(nc_data_y,nc_data_x, c='b')
+plt.scatter(pharmacy_x, pharmacy_x, c='r')
+plt.show()
