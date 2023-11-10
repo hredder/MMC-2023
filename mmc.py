@@ -16,8 +16,8 @@ def Distance_Willing(income, kid_parant_ratio, health, insurance, vehicles, popu
     return alpha_income*income + alpha_kpr*kid_parant_ratio + alpha_health*health + alpha_insurance*insurance + alpha_vehicles*vehicles + alpha_pop_density*population_density
 
 count = 5000
-data_x = np.random.uniform(33.75578655156453, 36.733972442257816, count)
-data_y = np.random.uniform(-84.41352382914673, -75.3388168853683, count)
+data_x = np.random.uniform(-84.41352382914673, -75.3388168853683, count)
+data_y = np.random.uniform(33.75578655156453, 36.733972442257816, count)
 
 #Read the pharmacy x and y positions
 file=open("pharmacies.CSV", "r")
@@ -69,13 +69,13 @@ nc_data_y = []
 
 #Prune random data for points only in N.C.
 for i in range(len(data_x)):
-    point = Point(data_y[i], data_x[i])
+    point = Point(data_x[i], data_y[i])
     state = df_selection.apply(lambda row: row['Location'] if row['Polygon'].contains(point) else None, axis=1).dropna()
     if (state.size > 0 and state.iloc[0] == 'North Carolina'):
         nc_data_x.append(data_x[i])
         nc_data_y.append(data_y[i])
 
 #Plot random N.C. Data
-plt.scatter(nc_data_y,nc_data_x, c='b')
-plt.scatter(pharmacy_x, pharmacy_x, c='r')
+plt.scatter(nc_data_x,nc_data_y, c='b')
+plt.scatter(pharmacy_x, pharmacy_y, c='r')
 plt.show()
