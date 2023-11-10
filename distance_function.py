@@ -24,4 +24,5 @@ def calc_distance(x, y):
     return 5
 
 def Distance_Willing(income, kid_parant_ratio, health, insurance, vehicles, population_density):
-    return alpha_income*income + alpha_kpr*kid_parant_ratio + alpha_health*health + alpha_insurance*insurance + alpha_vehicles*vehicles + alpha_pop_density*population_density
+    #return alpha_income*income + alpha_kpr*kid_parant_ratio + alpha_health*health + alpha_insurance*insurance + alpha_vehicles*vehicles + alpha_pop_density*population_density
+    return 2
