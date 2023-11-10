@@ -4,6 +4,7 @@ import csv
 import json
 import pandas as pd
 from shapely.geometry import Polygon, Point, MultiPolygon
+import shapely
 
 alpha_income =       1
 alpha_kpr =          1
@@ -16,24 +17,24 @@ def Distance_Willing(income, kid_parant_ratio, health, insurance, vehicles, popu
     return alpha_income*income + alpha_kpr*kid_parant_ratio + alpha_health*health + alpha_insurance*insurance + alpha_vehicles*vehicles + alpha_pop_density*population_density
 
 if __name__ == '__main__':
-    count = 5000
+    count = 10
     data_x = np.random.uniform(-84.41352382914673, -75.3388168853683, count)
     data_y = np.random.uniform(33.75578655156453, 36.733972442257816, count)
 
-#Read the pharmacy x and y positions
-phamacies_file = open("pharmacies.CSV", "r")
-phamacies_reader = csv.reader(phamacies_file)
-pharmacy_x = []
-pharmacy_y = []
-pharmacy_points = []
-count = 0
+    #Read the pharmacy x and y positions
+    phamacies_file = open("pharmacies.csv", "r")
+    phamacies_reader = csv.reader(phamacies_file)
+    pharmacy_x = []
+    pharmacy_y = []
+    pharmacy_points = []
+    count = 0
 
-for line in phamacies_reader:
-    if (count > 0):
-        pharmacy_x.append(float(line[8]))
-        pharmacy_y.append(float(line[9]))
-        pharmacy_points.append(Point(line[8], line[9]))
-    count += 1
+    for line in phamacies_reader:
+        if (count > 0):
+            pharmacy_x.append(float(line[8]))
+            pharmacy_y.append(float(line[9]))
+            pharmacy_points.append(Point(float(line[8]), float(line[9])))
+        count += 1
 
     #Import GPS data
     data = json.load(open('geojson.json'))
@@ -101,13 +102,13 @@ for line in phamacies_reader:
         distance_willing = Distance_Willing(income, kpr, health, insurance, vehicles, pop_density)
         pharmacy_count = 0
         for pharmacy in pharmacy_points:
-            if (distance(pharmacy, Point(data_x[i], data_y[i])) < distance_willing):
+            if (shapely.distance(pharmacy, Point(data_x[i], data_y[i])) < distance_willing):
                 pharmacy_count += 1
         nc_data_pharmacies.append(pharmacy_count)
 
 
 
-#Plot random N.C. Data
+    #Plot random N.C. Data
     plt.scatter(nc_data_x,nc_data_y, c='b', s=3)
     plt.scatter(pharmacy_x, pharmacy_y, c='r', s=3)
     plt.show()
