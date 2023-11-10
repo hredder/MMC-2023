@@ -24,13 +24,14 @@ file=open("pharmacies.CSV", "r")
 reader = csv.reader(file)
 pharmacy_x = []
 pharmacy_y = []
+pharmacy_points = []
 count = 0
 
 for line in reader:
-
     if (count > 0):
         pharmacy_x.append(float(line[8]))
         pharmacy_y.append(float(line[9]))
+        pharmacy_points.append(Point(line[8], line[9]))
     count += 1
 
 #Import GPS data
@@ -79,17 +80,29 @@ for i in range(len(data_x)):
 
         # TODO: Get distance for point
             # Get income
+            income = 0
             # Get kid to parent ratio
+            kpr = 0
             # Get general health
+            health = 0
             # Get insurance
+            insurance = 0
             # Get number of vehicles
+            vehicles = 0
             # Get population density
+            pop_density = 0
 
 
 
         
 
-        # TODO: Iterate over every pharmacies checking its distance
+        # Iterate over every pharmacies checking its distance
+        distance_willing = Distance_Willing(income, kpr, health, insurance, vehicles, pop_density)
+        pharmacy_count = 0
+        for pharmacy in pharmacy_points:
+            if (distance(pharmacy, Point(data_x[i], data_y[i])) < distance_willing):
+                pharmacy_count += 1
+        nc_data_pharmacies.append[pharmacy_count]
 
 
 
