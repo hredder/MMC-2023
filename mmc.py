@@ -18,7 +18,7 @@ def Distance_Willing(income, kid_parant_ratio, health, insurance, vehicles, popu
     return alpha_income*income + alpha_kpr*kid_parant_ratio + alpha_health*health + alpha_insurance*insurance + alpha_vehicles*vehicles + alpha_pop_density*population_density
 
 if __name__ == '__main__':
-    count = 10
+    count = 5000
     data_x = np.random.uniform(-84.41352382914673, -75.3388168853683, count)
     data_y = np.random.uniform(33.75578655156453, 36.733972442257816, count)
 
@@ -84,13 +84,15 @@ if __name__ == '__main__':
         distance_param = distance_function.calc_distance(data_x[i], data_y[i])
         pharmacy_count = 0
         for pharmacy in pharmacy_points:
-            if (shapely.distance(pharmacy, Point(data_x[i], data_y[i])) < distance_param):
+            if (shapely.distance(pharmacy, Point(data_x[i], data_y[i]))*(69/5) < distance_param):
                 pharmacy_count += 1
+                nc_data_x.append(data_x[i])
+                nc_data_y.append(data_y[i])
         nc_data_pharmacies.append(pharmacy_count)
 
 
 
-    #Plot random N.C. Data
-    plt.scatter(nc_data_x,nc_data_y, c='b', s=3)
-    plt.scatter(pharmacy_x, pharmacy_y, c='r', s=3)
+    # Plot random N.C. Data
+    plt.scatter(nc_data_x,nc_data_y, c='b', alpha = 0.1)
+    #plt.scatter(pharmacy_x, pharmacy_y, c='r', s=3)
     plt.show()
