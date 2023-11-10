@@ -6,6 +6,8 @@ import pandas as pd
 from shapely.geometry import Polygon, Point, MultiPolygon
 import shapely
 import distance_function
+import geopy
+import geopy.distance
 
 if __name__ == '__main__':
     count = 500
@@ -74,13 +76,14 @@ if __name__ == '__main__':
             distance_param = distance_function.calc_distance(data_x[i], data_y[i])
             pharmacy_count = 0
             for pharmacy in pharmacy_points:
-                if (shapely.distance(pharmacy, Point(data_x[i], data_y[i]))*(69/5) < distance_param):
+                if (geopy.distance.geodesic((data_x[i], data_y[i]), (pharmacy.x, pharmacy.y)).mi < distance_param):
                     pharmacy_count += 1
                     nc_data_x.append(data_x[i])
                     nc_data_y.append(data_y[i])
             nc_data_pharmacies.append(pharmacy_count)
+        
 
     # Plot random N.C. Data
-    plt.scatter(nc_data_x,nc_data_y, c='b', alpha = 0.1)
+    plt.scatter(nc_data_x,nc_data_y, c='b', alpha = 0.002)
     #plt.scatter(pharmacy_x, pharmacy_y, c='r', s=3)
     plt.show()
