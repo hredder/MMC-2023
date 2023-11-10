@@ -1,6 +1,9 @@
 from matplotlib import pyplot as plt
 import numpy as np
 import csv
+import json
+import pandas as pd
+from shapely.geometry import Polygon, Point, MultiPolygon
 
 alpha_income =       1
 alpha_kpr =          1
@@ -22,6 +25,7 @@ reader = csv.reader(file)
 pharmacy_x = []
 pharmacy_y = []
 count = 0
+
 for line in reader:
 
     if (count > 0):
@@ -29,9 +33,46 @@ for line in reader:
         pharmacy_y.append(float(line[9]))
     count += 1
 
-print(pharmacy_x)
-print(pharmacy_y)
-
 #plt.scatter(data_x, data_y)
-plt.scatter(pharmacy_x, pharmacy_y, c='r')
-plt.show()
+#plt.scatter(pharmacy_x, pharmacy_y, c='r')
+#plt.show()
+
+
+#Import GPS data
+data = json.load(open('geojson.json'))
+df = pd.DataFrame(data["features"])
+
+#Extract fields
+df['Location'] = df['properties'].apply(lambda x: x['NAME'])
+df['Type'] = df['geometry'].apply(lambda x: x['type'])
+df['Coordinates'] = df['geometry'].apply(lambda x: x['coordinates'])
+
+#Generate polygon mapping
+df_new = pd.DataFrame()
+for idx, row in df.iterrows():
+
+    if row['Type'] == 'MultiPolygon':
+        list_of_polys = []
+        df_row = row['Coordinates']
+        for ll in df_row:
+            list_of_polys.append(Polygon(ll[0]))
+        poly = MultiPolygon(list_of_polys)
+
+    elif row['Type'] == 'Polygon':
+        df_row = row['Coordinates']
+        poly = Polygon(df_row[0])
+
+    else:
+        poly = None
+
+    row['Polygon'] = poly
+    df_new = df_new.append(row)
+
+df_selection = df_new.drop(columns=['type', 'properties', 'geometry','Coordinates'] )
+nc_pharmacies_x = []
+nc_pharmacies_y = []
+
+for i in range(len(pharmacy_x)):
+    point = Point(pharmacy_x[i], pharmacy_y[i])
+    state = df_selection.apply(lambda row: row['Location'] if row['Polygon'].contains(point) else None, axis=1).dropna()
+    print(state)
