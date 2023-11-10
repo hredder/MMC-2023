@@ -66,6 +66,7 @@ for idx, row in df.iterrows():
 df_selection = df_new.drop(columns=['type', 'properties', 'geometry','Coordinates'] )
 nc_data_x = []
 nc_data_y = []
+nc_data_pharmacies = []
 
 #Prune random data for points only in N.C.
 for i in range(len(data_x)):
@@ -74,6 +75,23 @@ for i in range(len(data_x)):
     if (state.size > 0 and state.iloc[0] == 'North Carolina'):
         nc_data_x.append(data_x[i])
         nc_data_y.append(data_y[i])
+
+
+        # TODO: Get distance for point
+            # Get income
+            # Get kid to parent ratio
+            # Get general health
+            # Get insurance
+            # Get number of vehicles
+            # Get population density
+
+
+
+        
+
+        # TODO: Iterate over every pharmacies checking its distance
+
+
 
 #Plot random N.C. Data
 plt.scatter(nc_data_x,nc_data_y, c='b')
