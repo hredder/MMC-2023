@@ -7,11 +7,16 @@ from shapely.geometry import Polygon, Point, MultiPolygon
 import shapely
 import distance_function
 
+def get_county(x, y):
+    point = Point(x,y)
+    county_data = json.load(open('counties.geojson'))
+    df = pd.DataFrame(data["features"])   
+
 if __name__ == '__main__':
     count = 500
     data_x = np.random.uniform(-84.41352382914673, -75.3388168853683, count)
     data_y = np.random.uniform(33.75578655156453, 36.733972442257816, count)
-
+    
     #Read the pharmacy x and y positions
     phamacies_file = open("pharmacies.csv", "r")
     phamacies_reader = csv.reader(phamacies_file)
