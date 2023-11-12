@@ -8,23 +8,21 @@ alpha_pop_density =  1
 
 def calc_distance(x, y):
     # TODO: Get distance for point
-    # Get income
-    income = 0
-    # Get kid to parent ratio
-    kpr = 0
-    # Get general health
-    health = 0
-    # Get insurance
-    insurance = 0
-    # Get number of vehicles
-    vehicles = 0
-    # Get population density
-    pop_density = 0
-    #return Distance_Willing(income, kpr, health, insurance, vehicles, pop_density)
-    return 5
+    # Get urban center
+    urban = False
+    # Get race
+    white = False
 
 
+    return Distance_Willing(urban, white)
+    #return 5
 
-def Distance_Willing(income, kid_parant_ratio, health, insurance, vehicles, population_density):
-    #return alpha_income*income + alpha_kpr*kid_parant_ratio + alpha_health*health + alpha_insurance*insurance + alpha_vehicles*vehicles + alpha_pop_density*population_density
-    return 2
+def Distance_Willing(urban, white):
+    if not urban and white:
+        return 23.15
+    elif urban and white:
+        return 19.3
+    elif not urban and not white:
+        return 21.575
+    elif urban and not white:
+        return 17.725
