@@ -12,7 +12,7 @@ import geopy.distance
 def get_county(x, y):
     point = Point(x,y)
     county_data = json.load(open('counties.geojson'))
-    df = pd.DataFrame(data["features"])   
+    df = pd.DataFrame(data["features"])
 
 if __name__ == '__main__':
     count = 500
@@ -78,7 +78,7 @@ if __name__ == '__main__':
             nc_data_y.append(data_y[i])
         
             # Iterate over every pharmacies checking its distance
-            distance_param = distance_function.calc_distance(data_x[i], data_y[i])
+            distance_param = distance_function.calc_distance(data_x[i], data_y[i], get_county(x, y))
             pharmacy_count = 0
             for pharmacy in pharmacy_points:
                 if (geopy.distance.geodesic((data_x[i], data_y[i]), (pharmacy.x, pharmacy.y)).mi < distance_param):

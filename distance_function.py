@@ -1,28 +1,24 @@
+import pandas as pd
 
-alpha_income =       1
-alpha_kpr =          1
-alpha_health =       1
-alpha_insurance =    1
-alpha_vehicles =     1
-alpha_pop_density =  1
-
-def calc_distance(x, y):
+def calc_distance(x, y, county):
     # TODO: Get distance for point
     # Get urban center
-    urban = False
+    urbanDf = pd.read_csv("Rural_and_Urban_Data.csv")
+    urbanType = urbanDf.loc[urbanDf['County'] == county].iloc[3]
+    if urbanType == Urban:
+        urban = True
+    else:
+        urban = False
     # Get race
-    white = False
+    whiteDf = pd.read_csv("nc-count-by-ethnicity SORTED.csv")
+    white = whiteDf.loc[(whiteDf['County'] == county) & (whiteDf['Race'] == 'White alone')].iloc[3]
 
 
     return Distance_Willing(urban, white)
     #return 5
 
 def Distance_Willing(urban, white):
-    if not urban and white:
+    if not urban:
         return white*23.15 + (1-white)*21.575
-    elif urban and white:
-        return 19.3
-    elif not urban and not white:
-        return 21.575
-    elif urban and not white:
-        return 17.725
+    else:
+        return white*17.725 + (1-white)*19.3
