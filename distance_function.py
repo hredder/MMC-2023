@@ -19,7 +19,7 @@ def calc_distance(x, y):
 
 def Distance_Willing(urban, white):
     if not urban and white:
-        return 23.15
+        return white*23.15 + (1-white)*21.575
     elif urban and white:
         return 19.3
     elif not urban and not white:
